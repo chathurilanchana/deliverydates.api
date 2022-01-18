@@ -4,8 +4,14 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Entities
 {
     public class DeliveryOption
     {
-        public DateTime DeliveryDate { get; set; }
+        public DeliveryOption(DateTime deliveryDate, bool isGreenDelivery)
+        {
+            DeliveryDate = deliveryDate;
+            IsGreenDelivery = isGreenDelivery;
+        }
 
-        public bool IsGreenDelivery { get; set; }
+        public DateTime DeliveryDate { get; }
+
+        public bool IsGreenDelivery { get;}
     }
 }

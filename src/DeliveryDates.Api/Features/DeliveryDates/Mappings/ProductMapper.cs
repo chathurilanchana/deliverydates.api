@@ -14,14 +14,11 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Mappings
             var mappedProducts = new List<Entities.Product>();
             foreach (var product in products)
             {
-                mappedProducts.Add(new Entities.Product
-                {
-                    DeliveryDays = product.DeliveryDays,
-                    Name = product.Name,
-                    Type = GetProductType(product.Type),
-                    DaysInAdvance = product.DaysInAdvance,
-                    Id = product.Id
-                });
+                mappedProducts.Add(new Entities.Product(product.Id,
+                    product.Name,
+                    product.DeliveryDays,
+                    GetProductType(product.Type),
+                    product.DaysInAdvance));
             }
 
             return mappedProducts;

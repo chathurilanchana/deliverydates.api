@@ -12,7 +12,6 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Filters
         {
             if (products.Any(p => p.Type == ProductType.External))
             {
-
                 return availableDeliveryDates.Where(p => p >= DateTime.Today.AddDays(DaysInAdvance))
                     .ToList();
             }

@@ -51,18 +51,12 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
         private List<DeliveryOption> DecorateWithGreenDelivery(List<DateTime> possibleDeliveryDates)
         {
             var deliveryDaysDecoratedWithGreenDelivery = new List<DeliveryOption>();
+
             foreach (var deliveryDate in possibleDeliveryDates)
             {
-                var deliveryOption = new DeliveryOption
-                {
-                    DeliveryDate = deliveryDate,
-                    IsGreenDelivery = false
-                };
-
-                if (deliveryDate.DayOfWeek == GreenDeliveryDay)
-                {
-                    deliveryOption.IsGreenDelivery = true;
-                }
+                var deliveryOption = deliveryDate.DayOfWeek == GreenDeliveryDay
+                    ? new DeliveryOption(deliveryDate, true)
+                    : new DeliveryOption(deliveryDate, false);
 
                 deliveryDaysDecoratedWithGreenDelivery.Add(deliveryOption);
             }

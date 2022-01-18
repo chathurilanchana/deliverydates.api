@@ -4,10 +4,19 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Entities
 {
     public class Product
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public List<Weekday> DeliveryDays { get; set; }
-        public ProductType Type { get; set; }
-        public int DaysInAdvance { get; set; }
+        public Product(long id, string name, List<Weekday> deliveryDays, ProductType type, int daysInAdvance)
+        {
+            Id = id;
+            Name = name;
+            DeliveryDays = deliveryDays;
+            Type = type;
+            DaysInAdvance = daysInAdvance;
+        }
+
+        public long Id { get; }
+        public string Name { get; }
+        public List<Weekday> DeliveryDays { get; }
+        public ProductType Type { get; }
+        public int DaysInAdvance { get; }
     }
 }
