@@ -22,7 +22,8 @@ namespace DeliveryDates.Api.UnitTests.DeliveryDates.Filters
             var sut = GetSut();
             var result = sut.GetDeliveryOptions(products, deliveryDatesUpto2Weeks);
 
-            result.All(d => d.DayOfWeek == DayOfWeek.Monday);
+            Assert.NotNull(result);
+            Assert.True(result.All(d => d.DayOfWeek == DayOfWeek.Monday));
         }
 
         private ProductDeliveryDatesFilter GetSut()
