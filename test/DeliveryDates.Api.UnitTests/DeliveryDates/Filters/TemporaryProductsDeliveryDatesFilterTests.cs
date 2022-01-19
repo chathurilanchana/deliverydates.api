@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DeliveryDates.Api.Features.DeliveryDates.Entities;
 using DeliveryDates.Api.Features.DeliveryDates.Filters;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace DeliveryDates.Api.UnitTests.DeliveryDates.Filters
         public void GivenDeliveryDates_WhenPassedToFilter_OnlyWeekdaysMatchingMondayToSundayOfCurrentWeekShouldBeReturned()
         {
             //arrange
-            var products = GetProducts();
+            var products = GetProducts(type: ProductType.Temporary);
             var deliveryDatesUpto2Weeks = GetUpcomming14Days();
 
             //act

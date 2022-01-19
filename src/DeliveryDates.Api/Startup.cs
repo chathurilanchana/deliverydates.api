@@ -33,7 +33,7 @@ namespace DeliveryDates.Api
                     };
                     o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 })
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetDeliveryDatesRequestValidator>()); ;
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetDeliveryDatesRequestValidator>());
            
             services.AddRouting();
 
