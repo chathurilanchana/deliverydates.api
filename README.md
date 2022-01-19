@@ -2,10 +2,10 @@
 This project calculates possible delivery dates for given list of products according to specific business rules.
 
 # How to Run it
-Make sure you have .net core 3.1 installed.
-Load the solution file DeliveryDates.Api.sln, select DeliveryDates.Api and run it.
-Access the swagger page from http://localhost:5000/swagger
-You can test it via swagger.
+1. Make sure you have .net core 3.1 installed.
+2. Load the solution file DeliveryDates.Api.sln, select DeliveryDates.Api and run it.
+3. Access the swagger page from http://localhost:5000/swagger
+4. You can test it via swagger.
 
 # Business Considerations
 1. For green delivery, I consider green delivery as deliveries on Friday.
