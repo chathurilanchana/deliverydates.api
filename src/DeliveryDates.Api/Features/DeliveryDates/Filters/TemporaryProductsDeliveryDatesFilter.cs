@@ -9,11 +9,16 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Filters
     {
         public List<DateTime> GetDeliveryOptions(List<Product> products, List<DateTime> availableDeliveryDates)
         {
-            var remainingDaysOfCurrentWeek = 7 - (DateTime.Today.DayOfWeek - DayOfWeek.Sunday);
+            if (products.Any(p => p.Type == ProductType.Temporary))
+            {
+                var remainingDaysOfCurrentWeek = 7 - (DateTime.Today.DayOfWeek - DayOfWeek.Sunday);
 
-            return availableDeliveryDates
-                .Where(p => p <= DateTime.Today.AddDays(remainingDaysOfCurrentWeek))
-                .ToList();
+                return availableDeliveryDates
+                    .Where(p => p <= DateTime.Today.AddDays(remainingDaysOfCurrentWeek))
+                    .ToList();
+            }
+
+            return availableDeliveryDates;
         }
     }
 }
