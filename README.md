@@ -12,7 +12,7 @@ You can test it via swagger.
 2. I have not tested all the scenarios under unit tests, byt I tried to add at least one test case for each business logic.
 
 # Technical Considerations
-1. I have used feature folder structure, to structure the project.
+1. I have used feature folder structure, to structure the project. You can locate code related to delivery dates feature in src->DeliveryDates.Api->Features->DeliveryDates
 2. The mappers I added can be replaced with Automapper or similar tool.
 3. In order to enforce CQRS and reduce coupling in controller and logic (I achieved this by using a service layer where handler get resolved, and adding ICommandHandler and IQueryHandler interfaces).
    we could use mediatR or similar. However CQRS is irrelavant for this application as we dont have a data source.
