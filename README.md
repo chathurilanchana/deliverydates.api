@@ -3,7 +3,7 @@ This project calculates possible delivery dates for given list of products accor
 
 # How to Run it
 1. Make sure you have .net core 3.1 installed.
-2. Load the solution file DeliveryDates.Api.sln, select DeliveryDates.Api and run it.
+2. Load the solution file DeliveryDates.Api.sln, select DeliveryDates.Api profile and run it.
 3. Access the swagger page from http://localhost:5000/swagger
 4. You can test it via swagger.
 
