@@ -20,6 +20,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Validators
                 RuleFor(x => x.Id).NotEqual(0).WithMessage("Product id is mandatory");
                 RuleFor(x => x.Name).NotEmpty().WithMessage("product name is mandatory");
                 RuleFor(x => x.Type).IsInEnum().WithMessage("product type is not as expected");
+                RuleFor(x => x.DeliveryDays).NotNull().WithMessage("delivery dates should not be null");
                 RuleForEach(x => x.DeliveryDays).IsInEnum().WithMessage("delivery days is not in expected format");
                 RuleFor(x => x.DaysInAdvance).NotEqual(0).WithMessage("days in advance is not as expected");
             }

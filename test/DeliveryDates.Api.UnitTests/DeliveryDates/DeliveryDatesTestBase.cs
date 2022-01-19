@@ -37,7 +37,7 @@ namespace DeliveryDates.Api.UnitTests.DeliveryDates
             };
         }
 
-        protected List<DateTime> Get14DatesFromToday()
+        protected List<DateTime> GetUpcomming14Days()
         {
             var deliveryDates = new List<DateTime>();
 

@@ -9,8 +9,6 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
 {
     internal class GetDeliveryDatesQueryHandler : IQueryHandler<List<Product>, List<DeliveryOption>>
     {
-        private const int PossibleDeliveryDays = 14;
-        private const DayOfWeek GreenDeliveryDay = DayOfWeek.Thursday;
         private readonly IEnumerable<IDeliveryDatesFilter> _deliveryDatesFilters;
 
         public GetDeliveryDatesQueryHandler(IEnumerable<IDeliveryDatesFilter> deliveryDatesFilters)
@@ -38,7 +36,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
             var sortedDeliveryDates = new List<DeliveryOption>();
 
             var greenDeliveryInNext3Days = deliveryDatesWithGreenDelivery.Where(d=>
-                d.IsGreenDelivery && d.DeliveryDate <DateTime.Today.AddDays(3)).OrderBy(d=>d.DeliveryDate).ToList();
+                d.IsGreenDelivery && d.DeliveryDate <= DateTime.Today.AddDays(3)).OrderBy(d=>d.DeliveryDate).ToList();
 
             var nonGreenDeliveryDates = deliveryDatesWithGreenDelivery.Except(greenDeliveryInNext3Days).OrderBy(p=>p.DeliveryDate);
 
@@ -54,7 +52,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
 
             foreach (var deliveryDate in possibleDeliveryDates)
             {
-                var deliveryOption = deliveryDate.DayOfWeek == GreenDeliveryDay
+                var deliveryOption = deliveryDate.DayOfWeek == Constants.GreenDeliveryDay
                     ? new DeliveryOption(deliveryDate, true)
                     : new DeliveryOption(deliveryDate, false);
 
@@ -68,7 +66,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
         {
             var possibleDeliveryDates = new List<DateTime>();
 
-            for (int i = 1; i <= PossibleDeliveryDays; i++)
+            for (int i = 1; i <= Constants.PossibleDeliveryDays; i++)
             {
                 possibleDeliveryDates.Add(DateTime.Today.AddDays(i));
             }

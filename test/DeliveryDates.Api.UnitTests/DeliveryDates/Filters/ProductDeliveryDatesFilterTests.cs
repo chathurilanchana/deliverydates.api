@@ -11,19 +11,23 @@ namespace DeliveryDates.Api.UnitTests.DeliveryDates.Filters
     {
 
         [Fact]
-        public void GivenDeliveryDates_WhenPassedToFilter_OnlyDatesAfterDaysInAdvanceShouldAppear()
+        public void GivenDeliveryDates_WhenPassedToFilter_OnlyWeekdaysMatchingBothProductsShouldBeReturned()
         {
-            var product1DeliveryDays = new List<Weekday> { Weekday.Monday };
-            var product2DeliveryDays = new List<Weekday> { Weekday.Monday, Weekday.Tuesday };
+            //arrange
+            const Weekday commonDayForBothProducts = Weekday.Monday;
+            var product1DeliveryDays = new List<Weekday> { commonDayForBothProducts };
+            var product2DeliveryDays = new List<Weekday> { commonDayForBothProducts, Weekday.Tuesday };
 
             var products = GetProducts(product1DeliveryDays, product2DeliveryDays);
-            var deliveryDatesUpto2Weeks = Get14DatesFromToday();
+            var deliveryDatesUpto2Weeks = GetUpcomming14Days();
 
+            //act
             var sut = GetSut();
             var result = sut.GetDeliveryOptions(products, deliveryDatesUpto2Weeks);
 
+            //assert
             Assert.NotNull(result);
-            Assert.True(result.All(d => d.DayOfWeek == DayOfWeek.Monday));
+            Assert.True(result.All(d => d.DayOfWeek == (DayOfWeek)Enum.Parse(typeof(DayOfWeek), commonDayForBothProducts.ToString())));
         }
 
         private ProductDeliveryDatesFilter GetSut()
