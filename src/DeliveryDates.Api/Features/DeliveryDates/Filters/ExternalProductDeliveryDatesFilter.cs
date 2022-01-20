@@ -5,7 +5,7 @@ using DeliveryDates.Api.Features.DeliveryDates.Entities;
 
 namespace DeliveryDates.Api.Features.DeliveryDates.Filters
 {
-    public class ExternalProductDeliveryDatesFilter : IDeliveryDatesFilter
+    internal class ExternalProductDeliveryDatesFilter : IDeliveryDatesFilter
     {
         public List<DateTime> GetDeliveryOptions(List<Product> products, List<DateTime> availableDeliveryDates)
         {
