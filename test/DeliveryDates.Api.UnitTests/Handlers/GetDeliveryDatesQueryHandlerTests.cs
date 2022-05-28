@@ -11,6 +11,7 @@ using Xunit;
 
 namespace DeliveryDates.Api.UnitTests.Handlers
 {
+    // application services are good candidate for integration tests
     public class GetDeliveryDatesQueryHandlerTests : DeliveryDatesTestBase
     {
         private readonly Mock<IDeliveryDatesFilter> _deliveryDatesFilter;
@@ -24,7 +25,7 @@ namespace DeliveryDates.Api.UnitTests.Handlers
         public void GivenListOfProducts_WhenPassedToHandler_FilteredResultsAreMarkedWithGreenDelivery()
         {
             //arrange
-            var products = GetProducts();
+            var products = GetRequest();
             var deliveryDatesUpto2Weeks = GetUpcomming14Days();
 
             _deliveryDatesFilter.Setup(p => p.GetDeliveryOptions(It.IsAny<List<Product>>(), It.IsAny<List<DateTime>>()))
@@ -35,34 +36,19 @@ namespace DeliveryDates.Api.UnitTests.Handlers
             var result = sut.Handle(products);
 
             //assert
+            //test response is as expected
             var expectedGreenDeliveryDates = deliveryDatesUpto2Weeks.Where(p => p.DayOfWeek == DayOfWeek.Friday).ToList();
             Assert.NotNull(result);
-            Assert.Equal(deliveryDatesUpto2Weeks.Count, result.Count);
-            var actualGreenDeliveryDates = result.Where(p => p.IsGreenDelivery).ToList();
+            Assert.Equal(deliveryDatesUpto2Weeks.Count, result.DeliveryOptions.Count);
+            var actualGreenDeliveryDates = result.DeliveryOptions.Where(p => p.IsGreenDelivery).ToList();
             Assert.Equal(expectedGreenDeliveryDates.Count, actualGreenDeliveryDates.Count());
             foreach (var expectedGreenDeliveryDate in expectedGreenDeliveryDates)
             {
                 Assert.Contains(actualGreenDeliveryDates, p => p.DeliveryDate == expectedGreenDeliveryDate);
             }
-        }
 
-        [Fact]
-        public void GivenListOfProducts_WhenPassedToHandler_ResultAreSortedAsExpected()
-        {
-            //arrange
-            var products = GetProducts();
-            var deliveryDatesUpto2Weeks = GetUpcomming14Days();
-
-            _deliveryDatesFilter.Setup(p => p.GetDeliveryOptions(It.IsAny<List<Product>>(), It.IsAny<List<DateTime>>()))
-                .Returns(deliveryDatesUpto2Weeks);
-
-            //act
-            var sut = GetSut();
-            var result = sut.Handle(products);
-
-            //assert
             var expectedDateList = GetExpectedDeliveryDatesList(deliveryDatesUpto2Weeks);
-            var returnedDateList = result.Select(p => p.DeliveryDate).ToList();
+            var returnedDateList = result.DeliveryOptions.Select(p => p.DeliveryDate).ToList();
             Assert.True(expectedDateList.SequenceEqual(returnedDateList));
         }
 

@@ -5,11 +5,11 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Mappings
 {
     internal static class DeliveryOptionsMapper
     {
-        public static GetDeliveryDatesResponse ToModel(string postalCode, List<Entities.DeliveryOption> deliveryOptions)
+        public static GetDeliveryDatesResponse ToModel(string postalCode, Entities.DeliveryOptions deliveryOptions)
         {
             var mappedDeliveryOptions = new List<GetDeliveryDatesResponse.DeliveryOption>();
 
-            foreach (var deliveryOption in deliveryOptions)
+            foreach (var deliveryOption in deliveryOptions.GetDeliveryOptions())
             {
                 mappedDeliveryOptions.Add(new GetDeliveryDatesResponse.DeliveryOption
                 {

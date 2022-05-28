@@ -3,6 +3,7 @@ using DeliveryDates.Api.Features.DeliveryDates;
 using DeliveryDates.Api.Features.DeliveryDates.Entities;
 using DeliveryDates.Api.Features.DeliveryDates.Filters;
 using DeliveryDates.Api.Features.DeliveryDates.Handlers;
+using DeliveryDates.Api.Features.DeliveryDates.Models;
 using DeliveryDates.Api.Features.DeliveryDates.Validators;
 using DeliveryDates.Api.Features.Shared.Cqrs;
 using DeliveryDates.Api.Middleware.ErrorHandling;
@@ -48,7 +49,7 @@ namespace DeliveryDates.Api
 
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddTransient<IDeliveryDatesService, DeliveryDatesService>();
-            services.AddTransient<IQueryHandler<List<Product>, List<DeliveryOption>>, GetDeliveryDatesQueryHandler>();
+            services.AddTransient<IQueryHandler<GetDeliveryDatesRequest, GetDeliveryDatesResponse>, GetDeliveryDatesQueryHandler>();
             services.AddTransient<IDeliveryDatesFilter, ProductDeliveryDatesFilter>();
             services.AddTransient<IDeliveryDatesFilter, DaysInAdvanceDeliveryDatesFilter>();
             services.AddTransient<IDeliveryDatesFilter, ExternalProductDeliveryDatesFilter>();

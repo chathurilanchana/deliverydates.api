@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using DeliveryDates.Api.Features.DeliveryDates.Entities;
 using DeliveryDates.Api.Features.DeliveryDates.Filters;
+using DeliveryDates.Api.Features.DeliveryDates.Mappings;
+using DeliveryDates.Api.Features.DeliveryDates.Models;
 using DeliveryDates.Api.Features.Shared.Cqrs;
 
 namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
 {
-    internal class GetDeliveryDatesQueryHandler : IQueryHandler<List<Product>, List<DeliveryOption>>
+    internal class GetDeliveryDatesQueryHandler : IQueryHandler<GetDeliveryDatesRequest, GetDeliveryDatesResponse>
     {
         private readonly IEnumerable<IDeliveryDatesFilter> _deliveryDatesFilters;
 
@@ -16,51 +18,25 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Handlers
             _deliveryDatesFilters = deliveryDatesFilters;
         }
 
-        public List<DeliveryOption> Handle(List<Product> products)
+        public GetDeliveryDatesResponse Handle(GetDeliveryDatesRequest deliveryDatesRequest)
         {
             var possibleDeliveryDates = GetPossibleDeliveryDays();
 
+            var products = ProductMapper.ToDomain(deliveryDatesRequest.Products);
             foreach (var deliveryDateFilter in _deliveryDatesFilters)
             {
                 possibleDeliveryDates =
                     deliveryDateFilter.GetDeliveryOptions(products, possibleDeliveryDates);
             }
+           
+            var deliveryOptions = new DeliveryOptions(possibleDeliveryDates);
+            deliveryOptions.DecorateWithGreenDelivery();
+            deliveryOptions.SortByDate();
 
-            var deliveryDatesWithGreenDelivery = DecorateWithGreenDelivery(possibleDeliveryDates);
-
-            return SortedDeliveryDates(deliveryDatesWithGreenDelivery);
+            var mappedResponse = DeliveryOptionsMapper.ToModel(deliveryDatesRequest.PostalCode, deliveryOptions);
+            return mappedResponse;
         }
 
-        private List<DeliveryOption> SortedDeliveryDates(List<DeliveryOption> deliveryDatesWithGreenDelivery)
-        {
-            var sortedDeliveryDates = new List<DeliveryOption>();
-
-            var greenDeliveryInNext3Days = deliveryDatesWithGreenDelivery.Where(d=>
-                d.IsGreenDelivery && d.DeliveryDate <= DateTime.Today.AddDays(3)).OrderBy(d=>d.DeliveryDate).ToList();
-
-            var nonGreenDeliveryDates = deliveryDatesWithGreenDelivery.Except(greenDeliveryInNext3Days).OrderBy(p=>p.DeliveryDate);
-
-            sortedDeliveryDates.AddRange(greenDeliveryInNext3Days);
-            sortedDeliveryDates.AddRange(nonGreenDeliveryDates);
-
-            return sortedDeliveryDates;
-        }
-
-        private List<DeliveryOption> DecorateWithGreenDelivery(List<DateTime> possibleDeliveryDates)
-        {
-            var deliveryDaysDecoratedWithGreenDelivery = new List<DeliveryOption>();
-
-            foreach (var deliveryDate in possibleDeliveryDates)
-            {
-                var deliveryOption = deliveryDate.DayOfWeek == Constants.GreenDeliveryDay
-                    ? new DeliveryOption(deliveryDate, true)
-                    : new DeliveryOption(deliveryDate, false);
-
-                deliveryDaysDecoratedWithGreenDelivery.Add(deliveryOption);
-            }
-
-            return deliveryDaysDecoratedWithGreenDelivery;
-        }
 
         private List<DateTime> GetPossibleDeliveryDays()
         {

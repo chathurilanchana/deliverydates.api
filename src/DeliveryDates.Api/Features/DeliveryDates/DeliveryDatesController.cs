@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using DeliveryDates.Api.Features.DeliveryDates.Mappings;
+﻿using System.Net;
 using DeliveryDates.Api.Features.DeliveryDates.Models;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
@@ -23,14 +21,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates
         [SwaggerResponse(HttpStatusCode.OK, typeof(GetDeliveryDatesResponse))]
         public IActionResult Post([FromBody] GetDeliveryDatesRequest getDeliveryDatesRequest)
         {
-            var mappedRequest = ProductMapper.ToDomain(getDeliveryDatesRequest.Products);
-
-            var possibleDeliveryDates = _deliveryDatesService.GetDeliveryDatesAsync(mappedRequest);
-
-            var mappedResponse =
-                DeliveryOptionsMapper.ToModel(getDeliveryDatesRequest.PostalCode, possibleDeliveryDates);
-
-            return Ok(mappedResponse);
+            return Ok(_deliveryDatesService.GetDeliveryDatesAsync(getDeliveryDatesRequest));
         }
     }
 }

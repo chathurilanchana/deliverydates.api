@@ -12,6 +12,6 @@ namespace DeliveryDates.Api.Features.DeliveryDates.Entities
 
         public DateTime DeliveryDate { get; }
 
-        public bool IsGreenDelivery { get;}
+        public bool IsGreenDelivery { get; }
     }
 }

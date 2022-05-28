@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeliveryDates.Api.Features.DeliveryDates.Entities;
+using DeliveryDates.Api.Features.DeliveryDates.Models;
 using DeliveryDates.Api.Features.Shared.Cqrs;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,7 @@ namespace DeliveryDates.Api.Features.DeliveryDates
 {
     public interface IDeliveryDatesService
     {
-        List<DeliveryOption> GetDeliveryDatesAsync(List<Product> products);
+        GetDeliveryDatesResponse GetDeliveryDatesAsync(GetDeliveryDatesRequest request);
     }
     internal class DeliveryDatesService : IDeliveryDatesService
     {
@@ -19,10 +20,10 @@ namespace DeliveryDates.Api.Features.DeliveryDates
             _serviceProvider = serviceProvider;
         }
 
-        public List<DeliveryOption> GetDeliveryDatesAsync(List<Product> products)
+        public GetDeliveryDatesResponse GetDeliveryDatesAsync(GetDeliveryDatesRequest request)
         {
-            var handler = _serviceProvider.GetRequiredService<IQueryHandler<List<Product>, List<DeliveryOption>>>();
-            return handler.Handle(products);
+            var handler = _serviceProvider.GetRequiredService<IQueryHandler<GetDeliveryDatesRequest,GetDeliveryDatesResponse>>();
+            return handler.Handle(request);
         }
     }
 }
