@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "develop", "PRICING-133-setting-up-price-management-service" ]
+    branches: [ "main"]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
 jobs:
   build:
